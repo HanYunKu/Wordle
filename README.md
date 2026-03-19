@@ -1,6 +1,6 @@
 # Wordle (Python)
 
-A simple Python implementation of the Wordle game.
+A super simple Python implementation of the Wordle game.
 
 ## Features
 
