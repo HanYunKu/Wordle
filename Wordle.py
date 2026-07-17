@@ -1,29 +1,31 @@
-import random
 import requests
-from colorama import Fore
+from colorama import Fore, init
 
-response = requests.get("https://random-word-api.herokuapp.com/word?length=5")
-data = response.json()
-secretWord = random.choice(data)
+init(autoreset=True)
 
-count = 0
-for letters in secretWord:
-    count += 1
-print(count * "_")
-guess = input("Guess the word: ")
+def main():
+    response = requests.get("https://random-word-api.herokuapp.com/word?length=5")
+    data = response.json()
+    secretWord = data[0]   # API already gives a single word
 
-while guess != secretWord:
-    while len(guess) != len(secretWord):
-        guess = input("Its a five-letter word, guess the word again: ")
+    print("_ " * len(secretWord))
 
-    for i in range(len(guess)):
-        if guess[i] == secretWord[i]:
-            print(Fore.GREEN + guess[i], end="")
-        elif guess[i] in secretWord:
-            print(Fore.YELLOW + guess[i], end="")
-        else:
-            print(Fore.RESET + '_', end="")
+    guess = input("Guess the word: ")
 
-    guess = input(Fore.RESET + "\nGuess the word: ")
+    while guess != secretWord:
+        while len(guess) != len(secretWord):
+            guess = input("It's a five-letter word, guess again: ")
 
-print("Victory")
+        for i in range(len(guess)):
+            if guess[i] == secretWord[i]:
+                print(Fore.GREEN + guess[i], end="")
+            elif guess[i] in secretWord:
+                print(Fore.YELLOW + guess[i], end="")
+            else:
+                print("_", end="")
+
+        guess = input("\nGuess the word: ")
+
+    print("Victory!")
+
+main()
